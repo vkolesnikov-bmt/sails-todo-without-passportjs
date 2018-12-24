@@ -9,7 +9,7 @@ module.exports = {
 
   addTodo: function(req, res) {
     let newTodo = { task: req.body.task, status: false, owner: req.body.currentUserId };  //
-    Todo.create(newTodo, function(err) {
+    Todo.create(newTodo, (err) => {
       if (err) {
         return res.serverError(err)
       }
@@ -20,7 +20,7 @@ module.exports = {
   },
 
   editTodo: function(req, res) {
-    Todo.update({ id: req.body.id }, { task: req.body.task, status: req.body.status }, function(err, todo) {
+    Todo.update({ id: req.body.id }, { task: req.body.task, status: req.body.status }, (err, todo) => {
       if (err) {
         return res.serverError(err);
       }
@@ -32,40 +32,40 @@ module.exports = {
   },
 
   deleteTodo: function(req, res) {
-    Todo.destroy({ owner: req.params.currentUserId, id: req.params.id }, function(err) {
+    Todo.destroy({ owner: req.params.currentUserId, id: req.params.id }, (err) => {
       if (err) {
-        return res.send({message: err});
+        return res.send({ message: err });
       }
       return res.ok({ message: `Success deleted todo with id: ${req.params.id}` });
     })
   },
 
   deleteAll: function(req, res) {
-    Todo.destroy({ owner: req.params.currentUserId }, function(err) {//owner: req.user.id add in function attributes
+    Todo.destroy({ owner: req.params.currentUserId }, (err) => {//owner: req.user.id add in function attributes
       if (err) {
         return res.send(err)
       }
-      if(req.params.currentUserId===null){
-        return res.send({message: 'Need login befor'})
+      if (req.params.currentUserId === null) {
+        return res.send({ message: 'Need login befor' })
       }
       return res.ok({ message: 'Delete all todos success' })
     })
   },
   deleteAllCompleted: function(req, res) {
-    Todo.destroy({ owner: req.params.currentUserId, status: true }, function(err) { //owner: req.user.id add in function attributes
+    Todo.destroy({ owner: req.params.currentUserId, status: true }, (err) => { //owner: req.user.id add in function attributes
       if (err) {
         return res.send(err)
       }
-      if(req.params.currentUserId===null){
-        return res.send({message: 'Need login befor'})
+      if (req.params.currentUserId === null) {
+        return res.send({ message: 'Need login befor' })
       }
       return res.ok({ message: 'Delete all completed success' })
     })
   },
 
   changeStatusAll: function(req, res) {
-    let stat = req.body.status ===true ;
-    Todo.update({ owner: req.body.currentUserId, status: !stat }, { status: stat }, function(err) {//owner: req.user.id add in function attributes
+    let stat = req.body.status === true;
+    Todo.update({ owner: req.body.currentUserId, status: !stat }, { status: stat }, (err) => {//owner: req.user.id add in function attributes
       if (err) {
         return res.send(err)
       }
@@ -74,7 +74,7 @@ module.exports = {
   },
 
   getTodoList: function(req, res) {
-    Todo.find({ owner: req.body.currentUserId }, function(err, records) {//owner: req.user.id add in function attributes
+    Todo.find({ owner: req.body.currentUserId }, (err, records) => {//owner: req.user.id add in function attributes
       if (err) {
         return res.send(err)
       }
